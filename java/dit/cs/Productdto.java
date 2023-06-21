@@ -12,7 +12,7 @@ package dit.cs;
  */
 public class Productdto{
 	private String ProductName;
-	private String price;
+	private int price;
 	
 	public String getProductName() {
 		return ProductName;
@@ -22,20 +22,19 @@ public class Productdto{
 		ProductName = productName;
 	}
 	
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
 	
 	
-	
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	
+/*=============================================================================================================================================================*/		
 	public  Productdto(){}
 	
-	
-	public Productdto(String ProductName,String price){
+	public Productdto(String ProductName,int price){
 		this.ProductName = ProductName;
 		this.price = price;
 	}

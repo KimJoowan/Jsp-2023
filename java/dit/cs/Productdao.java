@@ -25,28 +25,28 @@ public class Productdao{
 //=============================================================================================================================================================================
 	private Connection GetConnection() throws Exception{
 		InitialContext Initcx = new InitialContext();
-		DataSource ds = (DataSource)Initcx.lookup("java:comp/env/jdbc/jspdb");
+		DataSource ds = (DataSource)Initcx.lookup("java:comp/env/jdbc/jsp");
 		Connection con = ds.getConnection();
 		return con;		
 			
 	}	
 	
+	public Productdto list(String ProductName){
+		String sql = "select * from product where ProductName=?";
+		 Productdto dto = new Productdto();
 	
-	public Productdto list(String ProductName,String item) {
-		String sql = "select * from product where ProductName=?, item=?";
-		Productdto dto = new Productdto();
-		
 		try(Connection con = GetConnection(); 
 				PreparedStatement pst = con.prepareStatement(sql);
-			){
+		){
 			pst.setString(1, ProductName);
-			pst.setString(2, item);
 			ResultSet rs = pst.executeQuery();
 			
 			if(rs.next()) {
 				String getProductName = rs.getString("ProductName");
-				String getprice = rs.getString("price");
-				dto = new Productdto(getProductName, getprice);	
+				int getprice = rs.getInt("price");
+				dto = new Productdto(getProductName, getprice);
+
+				
 			}
 				
 		}catch (Exception e) {
@@ -54,6 +54,13 @@ public class Productdao{
 		}	
 		return dto;
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

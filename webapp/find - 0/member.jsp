@@ -135,8 +135,8 @@ button:hover {
     
     <label for="psw"><b>성별</b></label><br>
     <select name="gender" style="margin-bottom:15px">
-    	<option value="남자">남자</option>
-    	<option value="여자">여자</option>
+    	<option value="a">남자</option>
+    	<option value="b">여자</option>
     </select><br>
     
     <label for="psw"><b>폰번호</b></label>

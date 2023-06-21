@@ -27,7 +27,7 @@ public class Logindao{
 //=============================================================================================================================================================================
 	private Connection GetConnection() throws Exception{
 		InitialContext Initcx = new InitialContext();
-		DataSource ds = (DataSource)Initcx.lookup("java:comp/env/jdbc/jspdb");
+		DataSource ds = (DataSource)Initcx.lookup("java:comp/env/jdbc/jsp");
 		Connection con = ds.getConnection();
 		return con;		
 		
