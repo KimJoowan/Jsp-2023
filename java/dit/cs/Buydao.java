@@ -1,6 +1,5 @@
 package dit.cs;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -102,7 +101,7 @@ public class Buydao {
 //환붛 매소드
 //=============================================================================================================================================================================		
 	public void deletList(Buydto dto) {
-		String sql = "DELETE FROM buy WHERE ProductName=?, counts=?";
+		String sql = "DELETE from buy WHERE ProductName=? and counts=?";
 		
 		try(Connection con = GetConnection(); 
 			PreparedStatement pstmt  = con.prepareStatement(sql);

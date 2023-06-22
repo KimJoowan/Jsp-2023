@@ -50,12 +50,12 @@
   <form action="lIstD.jsp" class="was-validated" method="post">
     <div class="form-group">
      <label for="psw"><b>제품이름</b></label>
-    <input type="text" placeholder="제품이름" name="ProductName" value="<%=dto.getProductName()%>">
+    <input type="text" placeholder="제품이름" name="ProductName" value="<%=dto.getProductName()%>" readonly>
     </div>
     
     <div class="form-group">
       <label for="psw-repeat"><b>구매개수</b></label>
-      <input type="number" placeholder="구매개수" name="counts" value="<%=dto.getCounts()%>">
+      <input type="number" placeholder="구매개수" name="counts" value="<%=dto.getCounts()%>" readonly>
     </div>
     <input type="submit" value="환붛" class="btn btn-primary">
   </form>

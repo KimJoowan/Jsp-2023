@@ -9,6 +9,7 @@ package dit.cs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -31,9 +32,9 @@ public class Productdao{
 			
 	}	
 	
-	public Productdto list(String ProductName){
+	public ArrayList<Productdto> list(String ProductName){
 		String sql = "select * from product where ProductName=?";
-		 Productdto dto = new Productdto();
+		ArrayList<Productdto> dtos = new ArrayList<Productdto>();
 	
 		try(Connection con = GetConnection(); 
 				PreparedStatement pst = con.prepareStatement(sql);
@@ -41,10 +42,11 @@ public class Productdao{
 			pst.setString(1, ProductName);
 			ResultSet rs = pst.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				String getProductName = rs.getString("ProductName");
 				int getprice = rs.getInt("price");
-				dto = new Productdto(getProductName, getprice);
+				Productdto dto = new Productdto(getProductName, getprice);
+				dtos.add(dto);
 
 				
 			}
@@ -52,7 +54,7 @@ public class Productdao{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}	
-		return dto;
+		return dtos;
 	}
 	
 	

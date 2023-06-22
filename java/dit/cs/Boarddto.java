@@ -83,11 +83,10 @@ public class Boarddto {
 
     
     //수정
-    public Boarddto(String SUBJECT,String CONTENT,Date REGDATE,String WRITER,int BCODE) {
+    public Boarddto(String SUBJECT,String CONTENT,Date REGDATE,int BCODE) {
     	this.SUBJECT = SUBJECT;
         this.CONTENT = CONTENT;
         this.REGDATE = REGDATE;
-        this.WRITER = WRITER;
         this.BCODE = BCODE;
     }
     

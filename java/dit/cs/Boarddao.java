@@ -36,16 +36,15 @@ public class Boarddao{
 // from 에서 가져운 데이터의 db의 login 테이블에 저장
 //=============================================================================================================================================================================
 		public void insertboaro(Boarddto dto){
-			String sql ="insert into boaro values(?,?,?,?,?)";
+			String sql ="insert into boaro values(?,?,?,?)";
 				
 			try(Connection con = GetConnection(); 
 				PreparedStatement pstmt = con.prepareStatement(sql);
 			){
-				pstmt.setInt(1, dto.getBCODE());
-				pstmt.setString(2, dto.getSUBJECT());
-				pstmt.setString(3, dto.getCONTENT());
-				pstmt.setString(4, dto.getWRITER());
-				pstmt.setDate(5, dto.getREGDATE());
+				pstmt.setString(1, dto.getSUBJECT());
+				pstmt.setString(2, dto.getCONTENT());
+				pstmt.setString(3, dto.getWRITER());
+				pstmt.setDate(4, dto.getREGDATE());
 				pstmt.executeUpdate();
 					
 			}catch(Exception e){
@@ -69,12 +68,11 @@ public class Boarddao{
 			
 				// 3.생성된 연결을 통해 SQL문 실행 의뢰 준비
 				while(rs.next()){
-					int Bcode = rs.getInt("BCODE");
 					String SUBJECT = rs.getString("SUBJECT");
 					String WRITER = rs.getString("WRITER");
 					Date REGDATE = rs.getDate("REGDATE");
 					
-					Boarddto dto = new Boarddto(Bcode,SUBJECT,WRITER,REGDATE);
+					Boarddto dto = new Boarddto(0, SUBJECT,WRITER,REGDATE);
 					dtos.add(dto);
 				}
 				

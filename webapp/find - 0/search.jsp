@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="dit.cs.Productdto"%>
 <%@page import="dit.cs.Productdao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -6,7 +7,7 @@
 
 	String ProductName = request.getParameter("ProductName");
 	Productdao dao = new Productdao();
-	Productdto dto = dao.list(ProductName);
+	ArrayList<Productdto> dtos = dao.list(ProductName);
 	
 %>      
 <!DOCTYPE html>
@@ -73,10 +74,12 @@
       </tr>
     </thead>
     <tbody>
+    <%for(Productdto  dto: dtos){%>
       <tr>
         <td><a href="buy.jsp?ProductName=<%=dto.getProductName()%>"><%=dto.getProductName()%></td>
         <td><%=dto.getPrice()%></td>
       </tr>
+   	<%}%>   
     </tbody>
   </table>
 </div>

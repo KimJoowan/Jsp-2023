@@ -1,4 +1,4 @@
-<%@page import="java.sql.Date"%>
+s<%@page import="java.sql.Date"%>
 <%@page import="dit.cs.Boarddto"%>
 <%@page import="dit.cs.Boarddao"%>
 <%@page import="java.time.*"%>

@@ -59,23 +59,16 @@
   <h2>로그인</h2>
   <form action="Login2.jsp" class="was-validated" method="post">
     <div class="form-group">
-      <label for="id">아이디:</label>
+      <label for="id">아이디</label>
       <input type="text" class="form-control" id="id" placeholder="이이디" name="id" required>
       <div class="valid-feedback">Valid.</div>
       <div class="invalid-feedback">이 필드에 입력하십시오.</div>
     </div>
     <div class="form-group">
-      <label for="pwd">비밀번호:</label>
+      <label for="pwd">비밀번호</label>
       <input type="password" class="form-control" id="pwd" placeholder="비밀번호" name="pwd" required>
       <div class="valid-feedback">Valid.</div>
       <div class="invalid-feedback">이 필드에 입력하십시오.</div>
-    </div>
-    <div class="form-group form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" name="remember" required> 동의
-        <div class="valid-feedback">Valid.</div>
-        <div class="invalid-feedback">계속하려면 이 확인란을 선택합니다.</div>
-      </label>
     </div>
     <input type="submit" value="로그인" class="btn btn-primary">
   </form>
