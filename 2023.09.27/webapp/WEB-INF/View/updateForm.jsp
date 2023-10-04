@@ -35,7 +35,7 @@
 				<th>regDate</th><td><input type="text" value="${dto.regDate}" name="regDate"></td>
 			</tr>
 			<tr>
-				<th>기준파일</th><td><a download href="/uploadfiles/${dto.filename}">${dto.filename}</a></td>
+				<th>기준파일</th><td><a download href="uploadfiles/${dto.filename}">${dto.filename}</a></td>
 				<th>변경파일</th><td><input type="file" class="form-control" id="filename" name="filename"></td>
 			</tr>
 			<tr>
