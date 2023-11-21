@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 등록</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+/*-------------------------------------------------------------*/
+/*전체 툴*/
+/*-------------------------------------------------------------*/
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            align-items: center;
+            flex-direction: column; 
+            height: 100vh;
+        }
+
+        header {
+            padding: 30px;
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+        }
+
+        footer {
+            padding: 10px;
+            margin: 10px 0 20px 0;
+        }
+        
+/*-------------------------------------------------------------*/
+/*그릇 툴*/
+/*-------------------------------------------------------------*/
+        .footer-container {
+            background-color: #fff;
+            margin: 0 50px 10px 50px;
+            padding: 0 20px 20px 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar navbar-expand-md bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <div class="collapse navbar-collapse justify-content-start align-items-center" id="collapsibleNavbar">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+                <li class="nav-item dropdown ml-auto">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">메뉴</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="Login.jsp">로그인</a>
+                        <a class="dropdown-item" href="member.jsp">회원가입</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <h2 class="text-center font-weight-bold">게시글 등록</h2>
+            <hr />
+            <form action="insert.do" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <input type="text" class="form-control" id="subject" name="subject">
+                </div>
+                <div class="form-group">
+                    <label for="content">Content:</label><br>
+                    <textarea rows="10" cols="150" name="content" id="content"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="writer">Writer:</label>
+                    <input type="text" class="form-control" id="writer" name="writer">
+                </div>
+                <div class="form-group">
+                    <label for="filename">Filename:</label>
+                    <input type="file" class="form-control" id="filename" name="filename">
+                </div>
+                <div class="text-center">
+                    <input type="submit" value="등록" class="btn btn-secondary">
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <hr><p>Copyright © 2018 tcpschool.co.,Ltd. All rights reserved.</p>
+            <address>Contact webmaster for more information. 070-1234-5678</address>
+        </div>
+    </footer>
+</body>
+
+</html>
