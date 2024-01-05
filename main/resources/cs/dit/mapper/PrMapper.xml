@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cs.dit.mapper.PrMapper">
+	<insert id="insert">
+		insert into pr(subject,content,price,count,regdate,updatedate) values
+		(#{subject},#{content},#{price},#{count},now(),now())
+	</insert>
+	
+	<select id="list" resultType="cs.dit.domain.PrDTO">
+		select * from pr LIMIT #{pageStart},#{amount}
+	</select>
+	
+	<select id="selectlist" resultType="cs.dit.domain.PrDTO">
+		select * from pr 
+		where subject = #{subject}
+	</select>
+	
+	<select id="selectone" resultType="cs.dit.domain.PrDTO">
+		select * from pr where pcode = #{pcode}
+	</select>
+	
+	<select id="total" resultType="int">
+		select count(*) from pr
+	</select>
+	
+	
+	<update id="update">
+		update pr set
+		subject = #{subject},
+		content = #{content},
+		price = #{price},
+		count = #{count},
+		updatedate = now()
+		where pcode = #{pcode}
+	</update>
+	
+	<delete id="delete">
+		delete from pr where pcode = #{pcode}
+	</delete>
+
+
+
+
+
+</mapper>

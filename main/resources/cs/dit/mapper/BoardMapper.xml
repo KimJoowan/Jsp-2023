@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cs.dit.mapper.BoardMapper">
+	<insert id="insert">
+		insert into date_board(id, title, content, writer, regdate, updatedate) values
+		(#{id},#{title},#{content},#{writer},now(),now())
+	</insert>
+	
+	<select id="list" resultType="cs.dit.domain.BoardDTO">
+		select * from date_board 
+		order by bcode desc
+		LIMIT  #{pageStart},#{amount} 
+	</select>
+	
+	<select id="selectone" resultType="cs.dit.domain.BoardDTO">
+		select * from date_board where bcode = #{bcode}
+	</select>
+	
+	<select id="total" resultType="int">
+		select count(*) from date_board;
+	</select>
+	
+	<update id="update">
+		update date_board set 
+		title = #{title}, 
+		content = #{content},
+		writer = #{writer},
+		updatedate = now()
+		where bcode = #{bcode}
+	</update>
+	
+	<delete id="delete">
+		delete from date_board where bcode = #{bcode}
+	</delete>
+
+
+
+
+</mapper>

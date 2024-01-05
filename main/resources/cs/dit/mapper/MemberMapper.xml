@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cs.dit.mapper.MemberMapper">
+	<insert id="insert">
+		insert into date_member(id, pwd, email, name, address, phonenumber) 
+		values(#{id}, #{pwd}, #{email}, #{name}, #{address}, #{phonenumber})
+	</insert>
+	
+	<select id="selectone" resultType="cs.dit.domain.MemberDTO">
+		select * from date_member where id = #{id}
+	</select>
+	
+	<select id="login" resultType="cs.dit.domain.MemberDTO">
+		SELECT id FROM date_member WHERE id = #{id} And pwd = #{pwd}
+	</select>
+	
+	<update id="update">
+		update date_member set 
+		id = #{id},
+		pwd = #{pwd},
+		email = #{email},
+		name = #{name},
+		address = #{address},
+		phonenumber = #{phonenumber}
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from date_member where id = #{id}
+	</delete>
+
+
+
+
+
+</mapper>
