@@ -168,7 +168,7 @@
                     <textarea type="text" style="width: 100%; height: 240px;" placeholder="내용을 입력하세요">${BoardDto.content}</textarea>
                     <c:if test="${BoardDto.id == sessionid}">
                         <input type="submit" style="width: 10%; padding: 0; position: relative; left: 0%;" value="수정">
-                        <input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="삭제" onclick ="location.href='/board/remove?bcode=${BoardDto.bcode}'">
+                        <input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="삭제" onclick ="deletePost();">
                         <input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="게시판 이동">
                         <input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="취소" placeholder="내용을 입력하세요">           
                 	</c:if>
@@ -187,6 +187,21 @@
 </body>
 
 <script type="text/javascript">
+    function deletePost() {
+
+        const formHtml = `
+            <form id="deleteForm" action="/board/remove" method="post">
+                <input type="hidden" id="bcode" name="bcode" value="${BoardDto.bcode}" />
+            </form>
+        `;
+            const doc = new DOMParser().parseFromString(formHtml, 'text/html');
+            const form = doc.body.firstChild;
+            document.body.append(form);
+            document.getElementById('deleteForm').submit();
+        }
+
+
+
     function insertComments() {
         $.ajax({
             url: "/comment/register",
