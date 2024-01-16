@@ -30,6 +30,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from date_member where id = #{id}
 	</delete>
 
+	<select id="chack" resultType="boolean">
+		SELECT COUNT(*) from date_member
+		 WHERE id = #{id}
+	</select>
+
 
 
 
