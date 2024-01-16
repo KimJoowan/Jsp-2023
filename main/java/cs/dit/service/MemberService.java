@@ -13,4 +13,6 @@ public interface MemberService {
 	
 	public int remove(String id);
 
+	public Boolean chack(String id);
+
 }
