@@ -83,24 +83,20 @@ public class MemberController {
 	}
 	
 	@PostMapping("/check")
-	public String check(HttpServletRequest request, MemberDTO member) {		
+	@ResponseBody
+	public ResponseEntity<Boolean> login(HttpServletRequest request, MemberDTO member) {		
 		log.info("check");
-		MemberDTO Dto = service.check(member);
-		log.info(Dto.getId());
-
-		if(Dto != null) {
-			if(Dto.getId().equals("root")) {
-				HttpSession session = request.getSession();
-				session.setAttribute("sessionid", Dto.getId());
-				return "/stakeholder/Main";				
-			}else {
-				HttpSession session = request.getSession();
-				session.setAttribute("sessionid", Dto.getId());
-				return "/main/main";
-			}
+		
+		boolean result = service.check(member);
+		
+		if(result) {
+			HttpSession session = request.getSession();
+			session.setAttribute("sessionid", member.getId());
+			result = true;
 		}else {
-			return "error";
-		}		
+			result = false;
+		}	
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/get")
