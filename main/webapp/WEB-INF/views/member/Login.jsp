@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Login Page</title>
     <style>
         body {
@@ -55,35 +56,69 @@
 
         .form-group input[name="submit"]  {
             width: 80px;
-            margin: 10px auto 0; /*Æ¯Á¤ ¿©¹éÀ» ¼³Á¤ÇÏ°í ¼öÆòÀ¸·Î °¡¿îµ¥ ¸ÂÃã*/
-            display: block; /* ÀÌ ¼±À» Ãß°¡ÇÏ¿© ¸¶Áø ¼Ó¼ºÀÌ ÀÛµ¿ÇÏ´ÂÁö È®ÀÎÇÕ´Ï´Ù */
-            padding: 10px; /* ³»ºÎ¿©¹é */
-            background-color: #4caf50;  /*¹ÙÅÁ»ö*/
-            color: #000; /*±ÛÀÚ»ö*/
-            border: none; /*Å×µÎ¸® Á¦°Å*/
-            border-radius: 4px; /*¸ğ¼­¸® ±¼°îÀ» ¼³Á¤ÇÕ´Ï´Ù.*/
-            cursor: pointer; /*»ç¿ëÀÚ¿¡°Ô ¹öÆ°ÀÌ Å¬¸¯ °¡´ÉÇÏ°Å³ª ´ëÈ­ÇüÀÓÀ» ³ªÅ¸³À´Ï´Ù.*/
-            font-size: 16px; /*±ÛÀÚ Å©±â*/
+            margin: 10px auto 0; /*íŠ¹ì • ì—¬ë°±ì„ ì„¤ì •í•˜ê³  ìˆ˜í‰ìœ¼ë¡œ ê°€ìš´ë° ë§ì¶¤*/
+            display: block; /* ì´ ì„ ì„ ì¶”ê°€í•˜ì—¬ ë§ˆì§„ ì†ì„±ì´ ì‘ë™í•˜ëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤ */
+            padding: 10px; /* ë‚´ë¶€ì—¬ë°± */
+            background-color: #4caf50;  /*ë°”íƒ•ìƒ‰*/
+            color: #000; /*ê¸€ììƒ‰*/
+            border: none; /*í…Œë‘ë¦¬ ì œê±°*/
+            border-radius: 4px; /*ëª¨ì„œë¦¬ êµ´ê³¡ì„ ì„¤ì •í•©ë‹ˆë‹¤.*/
+            cursor: pointer; /*ì‚¬ìš©ìì—ê²Œ ë²„íŠ¼ì´ í´ë¦­ ê°€ëŠ¥í•˜ê±°ë‚˜ ëŒ€í™”í˜•ì„ì„ ë‚˜íƒ€ëƒ…ë‹ˆë‹¤.*/
+            font-size: 16px; /*ê¸€ì í¬ê¸°*/
         }
         
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>·Î±×ÀÎ</h2>
-        <form action="/member/check" class="login-form" method="post">
+        <h2>ë¡œê·¸ì¸</h2>
+        <form class="login-form" onsubmit="return Login();">
             <div class="form-group">
-                <label for="id">¾ÆÀÌµğ</label>
+                <label for="id">ì•„ì´ë””</label>
                 <input type="text" id="id" name="id" required>
             </div>
             <div class="form-group">
-                <label for="pwd">ºñ¹Ğ¹øÈ£</label>
+                <label for="pwd">ë¹„ë°€ë²ˆí˜¸</label>
                 <input type="password" id="pwd" name="pwd" required>
             </div>
             <div class="form-group">
-                <input type="submit" value="·Î±×ÀÎ" name="submit">
+            	<label id="label1"></label>
+                <input type="submit" value="ë¡œê·¸ì¸" name="submit" onclick="Login();">
             </div>
         </form>
     </div>
 </body>
+<script type="text/javascript">
+	function Login() {
+		
+		event.preventDefault();
+		let id = document.getElementById("id").value;
+		let pwd = document.getElementById("pwd").value;
+		
+		$.ajax({
+        	url : '/member/check',
+        	data : {
+            	id : id,
+            	pwd : pwd
+        	},
+        	type : 'POST',
+        	dataType : 'json',
+        	success : function(result) {
+        		console.log(result);
+            	if (result === true) {
+            		location.href='/main/main';		
+            	}
+            	if (result === false) {
+            		$("#label1").css("color", "red")
+            		.text("ì•„ì´ë””ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ë¥¼ ì˜ëª» ì…ë ¥í–ˆìŠµë‹ˆë‹¤.ì…ë ¥í•˜ì‹  ë‚´ìš©ì„ ë‹¤ì‹œ í™•ì¸í•´ì£¼ì„¸ìš”.");
+            	}
+        	}
+    	});
+		return false; // ê¸°ë³¸ ë™ì‘ ë°©ì§€
+		
+	}
+
+
+
+</script>
 </html>
