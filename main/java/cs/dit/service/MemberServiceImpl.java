@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
 
 	
 	@Override
-	public MemberDTO check(MemberDTO member) {
+	public Boolean check(MemberDTO member) {
 		log.info("Login------------------------------");
 		return mapper.login(member);
 	}
