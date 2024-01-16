@@ -13,4 +13,6 @@ public interface MemberMapper {
 	
 	public int delete(String id);
 
+	public int total();
+
 }
