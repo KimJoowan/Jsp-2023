@@ -13,6 +13,6 @@ public interface MemberMapper {
 	
 	public int delete(String id);
 
-	public int total();
+	public Boolean chack(String id);
 
 }
