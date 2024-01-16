@@ -11,8 +11,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from date_member where id = #{id}
 	</select>
 	
-	<select id="login" resultType="cs.dit.domain.MemberDTO">
-		SELECT id FROM date_member WHERE id = #{id} And pwd = #{pwd}
+	<select id="login" resultType="boolean">
+		SELECT COUNT(*) FROM date_member WHERE id = #{id} And pwd = #{pwd}
 	</select>
 	
 	<update id="update">
