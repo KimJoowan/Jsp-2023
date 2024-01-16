@@ -11,7 +11,7 @@ import lombok.extern.log4j.Log4j;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-	//spring 4.3 �̻󿡼� �ڵ� ó��
+	//spring 4.3 ÀÌ»ó¿¡¼­ ÀÚµ¿ Ã³¸®
 	private final MemberMapper mapper;
 	
 	@Override
@@ -44,6 +44,12 @@ public class MemberServiceImpl implements MemberService {
 	public int remove(String id) {
 		log.info("delect------------------------------");
 		return mapper.delete(id);
+	}
+
+	@Override
+	public Boolean chack(String id) {
+		log.info("chack------------------------------");
+		return mapper.chack(id);
 	}
 	
 	
