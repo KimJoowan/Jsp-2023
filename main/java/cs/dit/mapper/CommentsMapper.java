@@ -10,5 +10,5 @@ public interface CommentsMapper {
 	
 	public List<CommentsDTO> list(int bcode);
 	
-	public void insert(@Param ("bcode")int bcode, @Param("content") String content);
+	public Boolean insert(@Param ("bcode")int bcode, @Param("content") String content);
 }
