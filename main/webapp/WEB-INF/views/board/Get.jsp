@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
 /*-------------------------------------------------------------*/
 /*전체 툴*/
@@ -81,6 +81,13 @@
         .board-add-container {
             text-align: left;
             padding: 30px;
+            border: 1px solid black;
+        }
+        
+        .board-content-container {
+            text-align: left;
+            padding: 30px;
+            border: 1px solid black;
         }
 
         .footer-container {
@@ -142,7 +149,7 @@
             <input type="button" class="menuButton" value="게시글 보기">
             <div class="board-meun-container">
                 <ul class="nav flex-column">  
-                    <li class="nav-item"><a class="nav-link text-dark"  href="#"><h5>전체글 보기</h6></a></li>
+                    <li class="nav-item"><a class="nav-link text-dark"  href="#"><h5>전체글 보기</h5></a></li>
                     <li class="nav-item"><a class="nav-link text-dark"  href="#"><h5>인기글</h5></a></li>
                     <li class="nav-item"><a class="nav-link text-dark"  href="#"><h5>모든글</h5></a></li>
                     <li class="nav-item"><a class="nav-link text-dark"  href="#"><h5>모든글</h5></a></li>
@@ -162,18 +169,42 @@
             
             <div class="board-add-container">
                 <h3>수정중</h3><hr>
-                <form>
-                    <input type="hidden" name="bcode" id="bcode" value="${BoardDto.bcode}">
-                    <input type="text" name="title" style="width: 100%;" placeholder="제목을 입력하세요" id="title" value="${BoardDto.title}">
-                    <textarea type="text" style="width: 100%; height: 240px;" placeholder="내용을 입력하세요">${BoardDto.content}</textarea>
-                    <c:if test="${BoardDto.id == sessionid}">
-                        <input type="submit" style="width: 10%; padding: 0; position: relative; left: 0%;" value="수정">
-                        <input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="삭제" onclick ="deletePost();">
-                        <input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="게시판 이동">
-                        <input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="취소" placeholder="내용을 입력하세요">           
-                	</c:if>
-                </form>
+                <c:if test="${BoardDto.id == sessionid}">
+                	<form action="/board/modify" method="post">
+                    	<input type="hidden" name="bcode" id="bcode" value="${BoardDto.bcode}">
+                    	<input type="text" name="title" style="width: 100%;" placeholder="제목을 입력하세요" id="title" value="${BoardDto.title}">
+                    	<textarea  style="width: 100%; height: 240px;" name="content" placeholder="내용을 입력하세요">${BoardDto.content}</textarea>                 
+                    	<input type="submit" style="width: 10%; padding: 0; position: relative; left: 0%;" value="수정">
+                    	<input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="삭제" onclick ="deletePost(${BoardDto.bcode});">
+                    	<input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="게시판 이동"><!-- 미구현 -->
+                    	<input type="button" style="width: 10%; padding: 0; position: relative; left: 0%;" value="취소" onclick="/board/list" placeholder="내용을 입력하세요">           
+                	</form>              
+                </c:if>
+                <c:if test="${BoardDto.id != sessionid}">
+                	<form>
+                    	<input type="hidden" name="bcode" id="bcode" value="${BoardDto.bcode}">
+                    	<input type="text" name="title" style="width: 100%;" id="title" value="${BoardDto.title}" readonly="readonly">
+                    	<textarea  style="width: 100%; height: 240px;"readonly="readonly"><c:out value="${BoardDto.content}"></c:out></textarea>                       
+                	</form>              
+                </c:if>                                                                                
             </div>
+            <div class="board-content-container">
+                <h3>댓글작성</h3><hr>
+                <input type="text" style="width: 100%; height: 50px;" placeholder="댓글을 입력하세요." id="content">
+                <input style="width: 5%; height: 50px; background-color: #ffffff; border: 0px; position: relative; left: 95%; top: 10px;" type="button" onclick="contentPost();" value="답글">
+            	<table class="table">
+    				<thead>
+        				<tr>
+            				<td>번호</td>
+            				<td>제목</td>
+            				<td>작성 날짜</td>
+        				</tr>
+    				</thead>
+    				<tbody id="contents">  
+        				
+    				</tbody>                  	             		
+				</table>
+            </div>        
         </div>
 
     </section>
@@ -185,63 +216,77 @@
         </div>
     </footer>
 </body>
-
 <script type="text/javascript">
-    function deletePost() {
+ 
+	function deletePost(bcode) {
+    	// 폼 요소 생성
+    	const form = document.createElement('form');
+    		form.style.display = 'none'; // 폼 숨기기
+    		form.method = 'post';
+    		form.action = '/board/remove';
 
-        const formHtml = `
-            <form id="deleteForm" action="/board/remove" method="post">
-                <input type="hidden" id="bcode" name="bcode" value="${BoardDto.bcode}" />
-            </form>
-        `;
-            const doc = new DOMParser().parseFromString(formHtml, 'text/html');
-            const form = doc.body.firstChild;
-            document.body.append(form);
-            document.getElementById('deleteForm').submit();
-        }
+    	// 게시판 코드를 위한 입력 요소 생성
+    	const input = document.createElement('input');
+    		input.type = 'hidden';
+    		input.name = 'bcode';
+    		input.value = bcode;
 
+    	// 입력을 폼에 추가하고 폼을 본문에 추가
+    	form.appendChild(input);
+    	document.body.appendChild(form);
 
+    	// 폼 제출
+    	form.submit();
+	}
 
-    function insertComments() {
-        $.ajax({
-            url: "/comment/register",
-            type: "POST",
-            contentType: "application/x-www-form-urlencoded", // Set the content type
-            data: {
-                "content": $('#comment').val(),
-                "bcode": $('#bcode').val()
-            },
-            success: function (data) {
-                alert('ok'); 
-                  
-            },
-            error: function () {
-                alert('error');
-            }
-        });
-    }
-    
-    function getComments(){
-        $.ajax({
-            url: "/comment/list?bcode="+$('#bcode').val(),
-            type: "GET",
-            anync: true,
-            datatype: 'json',
-            success: function (data) {
-                var str = '';
-                for(var i in list){
-                    str += '<tr><td>' + data[i].ccode + '</td>';
-                    str += '<td>' + data[i].content + '</td>';
-                    str += '<td>' + data[i].regdate + '</td></tr>';
-                }
-                $('#commentsTable').html(str);               
-            }
-        });
-        
-        
-    }
-    
-    window.onload = function() {getComments()};                          
+	function contentPost() {
+		let bcode = document.getElementById("bcode").value;
+		let content = document.getElementById("content").value;
+		
+		$.ajax({
+			url : '/comment/register',
+			data : {
+				bcode : bcode,
+				content : content
+        	},
+        	type : 'POST',
+        	dataType : 'json',
+        	success : function(data){
+        		console.log('성공:', data);
+        		getList();
+        		$("#content").val('');
+        	},
+        	error: function(xhr, data, error) {
+                console.error('AJAX request failed:', data, error);
+                // Handle the error (e.g., display a generic error message)
+        	}
+      	});
+	}
+	
+	function getList() {
+	    $.ajax({
+	        url: "/comment/list?bcode=" + $('#bcode').val(),
+	        type: "GET",
+	        dataType: 'json',
+	        success: function (value) {  // 이름을 data로 변
+
+	            var str = '';
+
+	            for (const item of value) {
+	                str += '<tr><td>' + item.ccode + '</td>';
+	                str += '<td>' + item.content + '</td>';
+	                str += '<td>' + item.regdate + '</td></tr>';
+	            }
+	         
+	            $("#contents").html(str);
+	        },
+	        error: function (xhr, status, error) {
+	            console.error('AJAX 요청 실패:', status, error);
+	        }
+	    });
+	}
+
+    window.onload = function() {getList()};
+
 </script>
-
 </html>
