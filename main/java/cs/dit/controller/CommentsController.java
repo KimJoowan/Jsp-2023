@@ -22,29 +22,31 @@ public class CommentsController {
 	@Autowired
 	private final CommentsService service;
 	
-	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String insert(int bcode, String content) {
-		log.info("register");
-		log.info("bcode:"+bcode);
-		log.info("content:"+content);
+	@PostMapping("/register")
+	@ResponseBody
+	public ResponseEntity<Boolean> insert(int bcode, String content) {
+		boolean data = false;
+			
+		if(service.register(bcode, content)) {
+			data = true;
+		}
 		
-		service.register(bcode, content);
-		return "/main/main";
+		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
 	
 	@GetMapping("/list")
-	public String list(Model model, @RequestParam(name = "bcode", required = false) Integer bcode) {
-		
-		if (bcode != null) {
+	@ResponseBody
+	public List<CommentsDTO> list(Model model, int bcode) {
+			
+		if (bcode > 0) {
 			log.info("list");
 			log.info("bcode:"+bcode);
-			model.addAttribute("value", service.list(bcode));
-			return "/main/main";
-		}else {
-			log.info("error");
-			return "error";
+			List<CommentsDTO> value = service.list(bcode);
+			return value;	
 		}
+		
+		return null;
+		
 			
 	}
 	
