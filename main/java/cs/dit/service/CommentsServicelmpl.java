@@ -14,7 +14,7 @@ import lombok.extern.log4j.Log4j;
 @RequiredArgsConstructor
 public class CommentsServicelmpl implements CommentsService{
 	
-	//spring 4.3 �̻󿡼� �ڵ� ó��
+	//spring 4.3 이상에서 자동 처리
 	private final CommentsMapper Mapper;
 	
 	@Override
@@ -25,9 +25,9 @@ public class CommentsServicelmpl implements CommentsService{
 	}
 
 	@Override
-	public void register(int bcode, String content) {
+	public Boolean register(int bcode, String content) {
 		log.info("register");
-		Mapper.insert(bcode,content);
+		return Mapper.insert(bcode,content);
 		
 	}
 
