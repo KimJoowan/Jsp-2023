@@ -33,31 +33,30 @@ public class BoardController {
 	}
 	
 	@PostMapping("/register")
-	public String register(HttpServletRequest request, BoardDTO board) {
-		HttpSession session = request.getSession();
-		String id = (String) session.getAttribute("sessionid");	
+	// 세션에서 "sessionid"라는 이름의 속성을 가져와 String 변수에 바인딩
+	public String register(@SessionAttribute("sessionid") String id, BoardDTO board) {
 		board.setId(id);
 		service.register(board);
 		return "redirect:/board/list";	
 	}
 	
 	@GetMapping("/list")
-	public String list(Criteria cri, Model model) {
-		log.info("list");
+	public String list(Criteria cri, Model model) {	
+		
+		if(cri.getPageNum()<1) {
+			cri.setPageNum(1);
+		}
+			
+		pageDTO page = new pageDTO(cri, service.total());
+		model.addAttribute("page", page);
+		
+		if(page.isNextWell()) {
+			cri.setPageNum(page.getRealEnd());
+			model.addAttribute("list", service.getlist(cri));	
+		}
 
-		if(service != null) {
-			int total = service.total();
-			model.addAttribute("list", service.getlist(cri));
-			
-			pageDTO page = new pageDTO(cri, total);
-			model.addAttribute("page", page);
-			log.info("getStartPage"+page.getStartPage());
-			log.info("getEndPage"+page.getEndPage());
-			
-			return "/board/list";
-		}else {
-			return "/error";
-		}			
+		model.addAttribute("list", service.getlist(cri));	
+		return "/board/list";					
 	}
 	
 	@GetMapping("/get")
