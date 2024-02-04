@@ -190,7 +190,7 @@
             </div>
             <div class="board-content-container">
                 <h3>댓글작성</h3><hr>
-                <input type="text" style="width: 100%; height: 50px;" placeholder="댓글을 입력하세요." id="content">
+                <input type="text" style="width: 100%; height: 50px;" placeholder="댓글을 입력하세요." id="content" required>
                 <input style="width: 5%; height: 50px; background-color: #ffffff; border: 0px; position: relative; left: 95%; top: 10px;" type="button" onclick="contentPost();" value="답글">
             	<table class="table">
     				<thead>
@@ -243,26 +243,32 @@
 		let bcode = document.getElementById("bcode").value;
 		let content = document.getElementById("content").value;
 		
-		$.ajax({
-			url : '/comment/register',
-			data : {
-				bcode : bcode,
-				content : content
-        	},
-        	type : 'POST',
-        	dataType : 'json',
-        	success : function(data){
-        		console.log('성공:', data);
-        		getList();
-        		$("#content").val('');
-        	},
-        	error: function(xhr, data, error) {
-                console.error('AJAX request failed:', data, error);
-                // Handle the error (e.g., display a generic error message)
-        	}
-      	});
+		if(content){
+			$.ajax({
+				url : '/comment/register',
+				data : {
+					bcode : bcode,
+					content : content
+	        	},
+	        	type : 'POST',
+	        	dataType : 'json',
+	        	success : function(data){
+	        		console.log('성공:', data);
+	        		getLists();
+	        		$("#content").val('');
+	        	},
+	        	error: function(xhr, data, error) {
+	                console.error('AJAX request failed:', data, error);
+	                // Handle the error (e.g., display a generic error message)
+	        	}
+	      	});
+			
+		}else{
+			alert('내용을 입력해주세요!');
+		}		
 	}
 	
+	/*ajax*/
 	function getList() {
 	    $.ajax({
 	        url: "/comment/list?bcode=" + $('#bcode').val(),
@@ -285,8 +291,42 @@
 	        }
 	    });
 	}
-
-    window.onload = function() {getList()};
+	
+	/*fetch*/
+	function getLists(){
+		
+		const bcode = document.getElementById("bcode").value;      
+              
+        fetch("/comment/list?bcode=" + bcode,{
+            method: "get",
+            headers:{
+                "Content-Type" : "application/json",
+            },
+            
+        })        
+        .then(res => {
+        	if (!res.ok) {
+            	throw new Error(`Network response was not ok: ${res.status}`);
+        	}
+        	return res.json();
+    	})    
+        .then(response => {
+            let str = '';
+            
+            for (let item of response) {
+                str += '<tr><td>' + item.ccode + '</td>';
+                str += '<td>' + item.content + '</td>';
+                str += '<td>' + item.regdate + '</td></tr>';
+            }
+     
+            $("#contents").html(str);
+        })      
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+	
+    window.onload = function() {getLists()};
 
 </script>
 </html>
