@@ -36,15 +36,11 @@ public class CommentsController {
 	
 	@GetMapping("/list")
 	@ResponseBody
-	public List<CommentsDTO> list(Model model, int bcode) {
-			
+	public List<CommentsDTO> list(Model model, int bcode, Criteria cri) {			
 		if (bcode > 0) {
-			log.info("list");
-			log.info("bcode:"+bcode);
-			List<CommentsDTO> value = service.list(bcode);
+			List<CommentsDTO> value = service.list(bcode, cri);
 			return value;	
-		}
-		
+		}	
 		return null;
 		
 			
