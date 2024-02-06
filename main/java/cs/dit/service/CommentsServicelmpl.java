@@ -18,9 +18,9 @@ public class CommentsServicelmpl implements CommentsService{
 	private final CommentsMapper Mapper;
 	
 	@Override
-	public List<CommentsDTO> list(int bcode) {
+	public List<CommentsDTO> list(int bcode, Criteria cri) {
 		log.info("list");
-		return Mapper.list(bcode);
+		return Mapper.list(bcode, cri);
 		
 	}
 
