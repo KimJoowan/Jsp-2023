@@ -204,6 +204,7 @@
         				
     				</tbody>                  	             		
 				</table>
+				<div id="tester" class="tester"></div>
             </div>        
         </div>
 
@@ -254,7 +255,9 @@
 	        	dataType : 'json',
 	        	success : function(data){
 	        		console.log('성공:', data);
-	        		getLists();
+	        		$("#contents").html('');
+	        		ajaxGetList();
+	        		page = 1;
 	        		$("#content").val('');
 	        	},
 	        	error: function(xhr, data, error) {
@@ -269,31 +272,67 @@
 	}
 	
 	/*ajax*/
-	function getList() {
-	    $.ajax({
-	        url: "/comment/list?bcode=" + $('#bcode').val(),
+	function ajaxGetList(pageNum) {
+		console.log(pageNum);
+	    $.ajax({	 
+	        url: "/comment/list?bcode=" + $('#bcode').val() + "&pageNum=" + pageNum,
 	        type: "GET",
 	        dataType: 'json',
 	        success: function (value) {  // 이름을 data로 변
 
 	            var str = '';
-
 	            for (const item of value) {
 	                str += '<tr><td>' + item.ccode + '</td>';
 	                str += '<td>' + item.content + '</td>';
-	                str += '<td>' + item.regdate + '</td></tr>';
+	                var date = new Date(item.regdate);
+	                var formattedDate = date.toISOString().split('T')[0];
+	                str += '<td>' + formattedDate + '</td></tr>';
+	                
 	            }
-	         
-	            $("#contents").html(str);
+	         	if(pageNum == 1){
+	         		 $("#contents").html(str);
+	         	}else{
+	         		$("#contents").append(str);
+	         	}	           	                
 	        },
 	        error: function (xhr, status, error) {
 	            console.error('AJAX 요청 실패:', status, error);
 	        }
 	    });
 	}
+		
+	function checkVisible(elm, evalType) {
+        evalType = evalType || "object visible";
+
+        var viewportHeight = $(window).height();
+        var scrolltop = $(window).scrollTop();
+        var elementPosition = $(elm).offset().top;
+        var elementHeight = $(elm).height();
+
+        if (evalType == "object visible") {
+            return ((elementPosition < (viewportHeight + scrolltop)) && (elementPosition > (scrolltop - elementHeight)));
+        }
+
+        if (evalType == "above") {
+            return (elementPosition < (viewportHeight + scrolltop));
+        }
+    }
 	
-	/*fetch*/
-	function getLists(){
+    window.onload = function() {ajaxGetList()};
+    
+    let page = 1;
+    
+    window.addEventListener("scroll", function () {    
+        if (checkVisible($('#tester'))) {
+            ajaxGetList(page);
+            page+=1;
+        } 
+    })
+
+    
+    
+    /*fetch*/
+	function fetchGetList(){
 		
 		const bcode = document.getElementById("bcode").value;      
               
@@ -313,20 +352,17 @@
         .then(response => {
             let str = '';
             
-            for (let item of response) {
+            for (let item of response) {          
                 str += '<tr><td>' + item.ccode + '</td>';
                 str += '<td>' + item.content + '</td>';
                 str += '<td>' + item.regdate + '</td></tr>';
             }
      
-            $("#contents").html(str);
+            $("#contents").html(str);          
         })      
         .catch(error => {
             console.error('Error:', error);
         });
     }
-	
-    window.onload = function() {getLists()};
-
 </script>
 </html>
