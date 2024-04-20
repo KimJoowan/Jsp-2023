@@ -10,15 +10,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectone" resultType="cs.dit.domain.MemberDTO">
 		select * from date_member where id = #{id}
 	</select>
-	
-	<select id="login" resultType="boolean">
-		SELECT COUNT(*) FROM date_member WHERE id = #{id} And pwd = #{pwd}
-	</select>
-	
+		
 	<update id="update">
 		update date_member set 
 		id = #{id},
-		pwd = #{pwd},
 		email = #{email},
 		name = #{name},
 		address = #{address},
@@ -26,17 +21,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id = #{id}
 	</update>
 	
+	<update id="pwdupdate">
+		update date_member set 
+		pwd = #{newpwd}
+		where id = #{id}
+	</update>
+	
 	<delete id="delete">
 		delete from date_member where id = #{id}
 	</delete>
-
-	<select id="chack" resultType="boolean">
+	
+	<select id="idCheck" resultType="boolean">
 		SELECT COUNT(*) from date_member
-		 WHERE id = #{id}
+		WHERE id = #{id}
 	</select>
-
-
-
-
+	
+	<select id="login" resultType="boolean">
+		SELECT COUNT(*) FROM date_member WHERE id = #{id} And pwd = #{pwd}
+	</select>
 
 </mapper>
