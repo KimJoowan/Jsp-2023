@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
 import cs.dit.domain.MemberDTO;
@@ -32,19 +33,24 @@ public class MemberController {
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
 	
-	@RequestMapping("joinmembership")
-	public String joinmembership() {
+	@GetMapping("joinmembership")
+	public String joinMembership() {
 		return "/member/Memberadd";
 	}
 	
-	@RequestMapping("login")
+	@GetMapping("login")
 	public String login() {
 		return "member/Login";
 	}
 	
-	@RequestMapping("/unregister")
+	@GetMapping("/unregister")
 	public String unregister(){
 		return "/member/Unregister";
+	}
+	
+	@GetMapping("/pwdmodify")
+	public String pwdmodify(){
+		return "/member/PwdModify";
 	}
 	
 	@RequestMapping("/logout")
@@ -53,9 +59,10 @@ public class MemberController {
 	    
 	    if (session != null) {
 	        session.invalidate();
+	        return "redirect:/main/index";
 	    }
 	    
-	    return "redirect:/main/index";
+	    return "error";
 	}
 	
 	@PostMapping("/idcheck")
@@ -63,7 +70,7 @@ public class MemberController {
 	public ResponseEntity<Boolean> confirmId(String id){
 		boolean result = service.idCheck(id);
 		return new ResponseEntity<>(result, HttpStatus.OK);	
-	}		
+	}	
 				
 	@PostMapping("/register")
 	public String regiseter(MemberDTO member) {
@@ -75,10 +82,9 @@ public class MemberController {
 			return"redirect:/main/index";
 		}
 		
-		//보류
-		return null;
+		return "error";
 	}
-	
+		
 	@PostMapping("/check")
 	@ResponseBody
 	public ResponseEntity<Boolean> login(HttpServletRequest request, MemberDTO member) {
@@ -108,13 +114,13 @@ public class MemberController {
 	}
 	
 	@GetMapping("/get")
-	public String get(@SessionAttribute(name = "sessionid", required = false) String id, Model model) {		
+	public String get(@SessionAttribute(name = "sessionid", required = false) String id, Model model) {	
 		if(id != null) {
 			model.addAttribute("Dto", service.get(id));
 			return "/member/Get";
 		}
 		
-		return "redirect:/main/index";			
+		return "error";			
 	}
 	
 	@PostMapping("/modify")
@@ -123,7 +129,32 @@ public class MemberController {
 			return "redirect:/main/main";			
 		}
 		
-		return "redirect:/main/index";	
+		return "error";	
+	}
+	
+	@PostMapping("/pwdmodify")
+	public String pwdModify(MemberDTO member, @SessionAttribute(name = "sessionid", required = false) String id, Model model) {
+		boolean result = false;	
+		MemberDTO getMember = service.get(id);
+				
+		if(getMember == null) {
+			model.addAttribute("result", result);
+			return "/member/PwdModify";
+		}
+		
+		result = passwordEncoder.matches(member.getPwd(), getMember.getPwd());
+		
+		if(result) {
+			member.setId(id);
+			member.setNewpwd(passwordEncoder.encode(member.getNewpwd()));
+			service.pwdModify(member);
+			model.addAttribute("result", result);
+			return "/member/PwdModify";
+			
+		}else {
+			model.addAttribute("result", result);
+			return "/member/PwdModify";
+		}	
 	}
 	
 	@RequestMapping("/remove")
@@ -135,7 +166,7 @@ public class MemberController {
 			return "redirect:/main/index";
 		}
 		
-		return "redirect:/main/index";
+		return "error";
 		
 	}	
 }
