@@ -11,46 +11,52 @@ import lombok.extern.log4j.Log4j;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-	//spring 4.3 ÀÌ»ó¿¡¼­ ÀÚµ¿ Ã³¸®
+	
+	//spring 4.3 이상에서 자동 처리
 	private final MemberMapper mapper;
 	
 	@Override
-	public int register(MemberDTO member) {
+	public Boolean register(MemberDTO member) {
 		log.info("insert------------------------------");
 		return mapper.insert(member);
 	}
 
-	
 	@Override
 	public Boolean check(MemberDTO member) {
 		log.info("Login------------------------------");
 		return mapper.login(member);
 	}
 	
-
 	@Override
 	public MemberDTO get(String id) {
-		log.info("selectone------------------------------");
 		return mapper.selectone(id);
 	}
 
 	@Override
-	public int modify(MemberDTO member) {
+	public Boolean modify(MemberDTO member) {
 		log.info("update------------------------------");
-		return mapper.update(member);
+		if(member != null) {
+			return mapper.update(member);
+		}
+		return false;	
 	}
 
 	@Override
-	public int remove(String id) {
-		log.info("delect------------------------------");
-		return mapper.delete(id);
+	public Boolean remove(String id) {	
+		if(id != null && !id.trim().isEmpty()) {
+			return mapper.delete(id);
+		}
+		return false;
 	}
 
 	@Override
-	public Boolean chack(String id) {
+	public Boolean idCheck(String id) {
 		log.info("chack------------------------------");
-		return mapper.chack(id);
+		return mapper.idCheck(id);
 	}
-	
-	
+
+	@Override
+	public Boolean pwdModify(MemberDTO member) {
+		return mapper.pwdupdate(member);
+	}	
 }
