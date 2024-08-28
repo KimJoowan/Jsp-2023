@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.main.mapper.VideoMapper">
+
+	<insert id="insert">
+		insert into video(title, explanation, imgName, videoName, regdate, updatedate)
+		values (#{title}, #{explanation}, #{imgName}, #{videoName}, now(), now())
+	</insert>
+	
+	<select id="list" resultType="com.main.domain.VideoDto">
+		select * from video
+		order by acode desc
+		LIMIT  #{pageStart},#{amount}
+	</select>
+	
+	<select id="get" resultType="com.main.domain.VideoDto">
+		select * from video where acode = #{acode}
+	</select>
+	
+	<update id="update">
+		update video set 
+		title = #{title}, 
+		explanation = #{explanation},
+		imgName = #{imgName},
+		videoName = #{videoName},
+		updatedate = now()
+		where acode = #{acode}
+	</update>
+	
+	<delete id="delete">
+		delete from video where acode = #{acode}
+	</delete>
+	
+</mapper>
